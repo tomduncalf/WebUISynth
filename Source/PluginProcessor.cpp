@@ -9,17 +9,21 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#define USE_UI true
+
 //==============================================================================
 WebUISynthAudioProcessor::WebUISynthAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+    : AudioProcessor (BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+                          .withInput ("Input", juce::AudioChannelSet::stereo(), true)
+#endif
+                          .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+#endif
+                          ),
+      parameterValueTree (*this, nullptr, "PARAMETERS", createParameterLayout()),
+      audioEngine (parameterValueTree)
 #endif
 {
 }
@@ -36,29 +40,29 @@ const juce::String WebUISynthAudioProcessor::getName() const
 
 bool WebUISynthAudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool WebUISynthAudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool WebUISynthAudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double WebUISynthAudioProcessor::getTailLengthSeconds() const
@@ -68,8 +72,8 @@ double WebUISynthAudioProcessor::getTailLengthSeconds() const
 
 int WebUISynthAudioProcessor::getNumPrograms()
 {
-    return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    return 1;// NB: some hosts don't cope very well if you tell them there are 0 programs,
+        // so this should be at least 1, even if you're not really implementing programs.
 }
 
 int WebUISynthAudioProcessor::getCurrentProgram()
@@ -95,6 +99,11 @@ void WebUISynthAudioProcessor::prepareToPlay (double sampleRate, int samplesPerB
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    audioEngine.prepare ({ sampleRate, (juce::uint32) samplesPerBlock, 2 });
+
+    juce::Timer::callAfterDelay (1000, [this]() {
+        DBG (parameterValueTree.state.toXmlString());
+    });
 }
 
 void WebUISynthAudioProcessor::releaseResources()
@@ -106,33 +115,45 @@ void WebUISynthAudioProcessor::releaseResources()
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool WebUISynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
     return true;
-  #else
+#else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     // Some plugin hosts, such as certain GarageBand versions, will only
     // load plugins that support stereo bus layouts.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
 
-    // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
+        // This checks if the input layout matches the output layout
+#if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
+#endif
 
     return true;
-  #endif
+#endif
 }
 #endif
+
+juce::AudioProcessorValueTreeState::ParameterLayout WebUISynthAudioProcessor::createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
+    layout.add (
+        std::make_unique<juce::AudioParameterFloat> (ParameterIdentifiers::filterCutoff, "Filter cutoff", 20, 10000, 1000));
+    layout.add (
+        std::make_unique<juce::AudioParameterFloat> (ParameterIdentifiers::filterResonance, "Filter resonance", 0, 0.9, 0.3));
+
+    return layout;
+}
 
 void WebUISynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
+    auto totalNumInputChannels = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
     // In case we have more outputs than inputs, this code clears any output
@@ -150,23 +171,26 @@ void WebUISynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
-    {
-        auto* channelData = buffer.getWritePointer (channel);
-
-        // ..do something to the data...
-    }
+    audioEngine.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
 //==============================================================================
 bool WebUISynthAudioProcessor::hasEditor() const
 {
-    return true; // (change this to false if you choose to not supply an editor)
+#if USE_UI
+    return true;
+#else
+    return false;
+#endif
 }
 
 juce::AudioProcessorEditor* WebUISynthAudioProcessor::createEditor()
 {
-    return new WebUISynthAudioProcessorEditor (*this);
+#if USE_UI
+    return new WebUISynthAudioProcessorEditor (*this, parameterValueTree);
+#else
+    return nullptr;
+#endif
 }
 
 //==============================================================================

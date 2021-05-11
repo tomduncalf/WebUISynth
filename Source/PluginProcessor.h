@@ -10,10 +10,14 @@
 
 #include <JuceHeader.h>
 
+#include "ParameterIdentifiers.h"
+
+#include "AudioEngine.h"
+
 //==============================================================================
 /**
 */
-class WebUISynthAudioProcessor  : public juce::AudioProcessor
+class WebUISynthAudioProcessor : public juce::AudioProcessor
 {
 public:
     //==============================================================================
@@ -24,9 +28,11 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
 
-   #ifndef JucePlugin_PreferredChannelConfigurations
+#ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
-   #endif
+#endif
+
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
@@ -56,4 +62,7 @@ public:
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WebUISynthAudioProcessor)
+
+    juce::AudioProcessorValueTreeState parameterValueTree;
+    AudioEngine audioEngine;
 };

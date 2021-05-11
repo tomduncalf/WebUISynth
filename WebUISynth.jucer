@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="HsEHXU" name="WebUISynth" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
   <MAINGROUP id="RgJ6UX" name="WebUISynth">
     <GROUP id="{C56288B6-82E3-C7B5-C9B2-9F54F79B1E78}" name="Source">
+      <FILE id="pmnTeF" name="AudioEngine.h" compile="0" resource="0" file="Source/AudioEngine.h"/>
+      <FILE id="cWe9n3" name="CustomOscillator.h" compile="0" resource="0"
+            file="Source/CustomOscillator.h"/>
+      <FILE id="zmMu8X" name="ParameterIdentifiers.h" compile="0" resource="0"
+            file="Source/ParameterIdentifiers.h"/>
+      <FILE id="LDLeBa" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Vn2Wh8" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="FZQbkn" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Ai5GJQ" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
-      <FILE id="LDLeBa" name="PluginEditor.cpp" compile="1" resource="0"
-            file="Source/PluginEditor.cpp"/>
-      <FILE id="Vn2Wh8" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="B3ewDT" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
@@ -34,6 +40,7 @@
         <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+        <MODULEPATH id="tomduncalf_juce_browser_integration" path="../../juce_modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -52,5 +59,10 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="tomduncalf_juce_browser_integration" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
   </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
 </JUCERPROJECT>
