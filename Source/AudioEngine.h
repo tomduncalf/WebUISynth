@@ -22,16 +22,9 @@ public:
     AudioEngine (juce::AudioProcessorValueTreeState& p): parameterValueTree (p)
     {
         for (auto i = 0; i < maxNumVoices; ++i)
-            addVoice (new Voice);
+            addVoice (new Voice (parameterValueTree));
 
         setVoiceStealingEnabled (true);
-
-        parameterValueTree.addParameterListener (ParameterIdentifiers::filterCutoff, this);
-        parameterValueTree.addParameterListener (ParameterIdentifiers::filterResonance, this);
-        parameterValueTree.addParameterListener (ParameterIdentifiers::ampEnvAttack, this);
-        parameterValueTree.addParameterListener (ParameterIdentifiers::ampEnvDecay, this);
-        parameterValueTree.addParameterListener (ParameterIdentifiers::ampEnvSustain, this);
-        parameterValueTree.addParameterListener (ParameterIdentifiers::ampEnvRelease, this);
     }
 
     //==============================================================================
@@ -45,16 +38,6 @@ public:
 
     void parameterChanged (const juce::String& parameterId, float newValue) override
     {
-        if (parameterId == ParameterIdentifiers::filterCutoff)
-        {
-            for (auto* v: voices)
-                dynamic_cast<Voice*> (v)->setCutoff (newValue);
-        }
-        else if (parameterId == ParameterIdentifiers::filterResonance)
-        {
-            for (auto* v: voices)
-                dynamic_cast<Voice*> (v)->setResonance (newValue);
-        }
     }
 
 private:

@@ -12,17 +12,32 @@
 
 #include "CustomOscillator.h"
 
-class Voice : public juce::MPESynthesiserVoice
+class Voice : public juce::MPESynthesiserVoice,
+              public juce::AudioProcessorValueTreeState::Listener
 {
 public:
-    Voice()
+    Voice (juce::AudioProcessorValueTreeState& p): parameterValueTree (p)
     {
+        parameterValueTree.addParameterListener (ParameterIds::osc1Type, this);
+        parameterValueTree.addParameterListener (ParameterIds::filterCutoff, this);
+        parameterValueTree.addParameterListener (ParameterIds::filterResonance, this);
+        parameterValueTree.addParameterListener (ParameterIds::ampEnvAttack, this);
+        parameterValueTree.addParameterListener (ParameterIds::ampEnvDecay, this);
+        parameterValueTree.addParameterListener (ParameterIds::ampEnvSustain, this);
+        parameterValueTree.addParameterListener (ParameterIds::ampEnvRelease, this);
+
         auto& masterGain = processorChain.get<masterGainIndex>();
-        masterGain.setGainLinear (0.5f);
+        masterGain.setGainLinear (0.7f);
 
         auto& filter = processorChain.get<filterIndex>();
-        filter.setCutoffFrequencyHz (100.0f);
-        filter.setResonance (0.3f);
+        filter.setCutoffFrequencyHz (p.getParameterAsValue (ParameterIds::filterCutoff).getValue());
+        filter.setResonance (p.getParameterAsValue (ParameterIds::filterResonance).getValue());
+
+        setAdsrParameters (
+            p.getParameterAsValue (ParameterIds::ampEnvAttack).getValue(),
+            p.getParameterAsValue (ParameterIds::ampEnvDecay).getValue(),
+            p.getParameterAsValue (ParameterIds::ampEnvSustain).getValue(),
+            p.getParameterAsValue (ParameterIds::ampEnvRelease).getValue());
     }
 
     //==============================================================================
@@ -32,22 +47,37 @@ public:
         processorChain.prepare (spec);
 
         adsrEnvelope.setSampleRate (spec.sampleRate);
-        juce::ADSR::Parameters adsrParameters;
-        adsrParameters.attack = 1.0f;
-        adsrParameters.release = 2.0f;
-        adsrEnvelope.setParameters (adsrParameters);
     }
 
-    void setCutoff (float newValue)
+    void setAdsrParameters (float a, float d, float s, float r)
     {
-        auto& filter = processorChain.get<filterIndex>();
-        filter.setCutoffFrequencyHz (newValue);
+        auto currentParameters = adsrEnvelope.getParameters();
+        juce::ADSR::Parameters newParameters;
+
+        newParameters.attack = a == -1 ? currentParameters.attack : a;
+        newParameters.decay = d == -1 ? currentParameters.decay : d;
+        newParameters.sustain = s == -1 ? currentParameters.sustain : s;
+        newParameters.release = r == -1 ? currentParameters.release : r;
+
+        adsrEnvelope.setParameters (newParameters);
     }
 
-    void setResonance (float newValue)
+    void parameterChanged (const juce::String& parameterId, float newValue) override
     {
-        auto& filter = processorChain.get<filterIndex>();
-        filter.setResonance (newValue);
+        if (parameterId == ParameterIds::filterCutoff)
+            processorChain.get<filterIndex>().setCutoffFrequencyHz (newValue);
+        else if (parameterId == ParameterIds::filterResonance)
+            processorChain.get<filterIndex>().setResonance (newValue);
+        else if (parameterId == ParameterIds::ampEnvAttack)
+            setAdsrParameters (newValue, -1, -1, -1);
+        else if (parameterId == ParameterIds::ampEnvDecay)
+            setAdsrParameters (-1, newValue, -1, -1);
+        else if (parameterId == ParameterIds::ampEnvSustain)
+            setAdsrParameters (-1, -1, newValue, -1);
+        else if (parameterId == ParameterIds::ampEnvRelease)
+            setAdsrParameters (-1, -1, -1, newValue);
+        else if (parameterId == ParameterIds::osc1Type)
+            processorChain.get<osc1Index>().setType ((int) newValue);
     }
 
     //==============================================================================
@@ -112,6 +142,8 @@ private:
     juce::dsp::AudioBlock<float> tempBlock;
 
     juce::ADSR adsrEnvelope;
+
+    juce::AudioProcessorValueTreeState& parameterValueTree;
 
     enum
     {

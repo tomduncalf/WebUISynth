@@ -10,7 +10,7 @@
 
 #include <JuceHeader.h>
 
-#include "ParameterIdentifiers.h"
+#include "ParameterIds.h"
 
 #include "AudioEngine.h"
 

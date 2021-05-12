@@ -4,9 +4,11 @@
  * is read-only, i.e. it can only receive updates, not send them.
  */
 
-import { runInAction } from "mobx";
+import { registerCallback } from "../juceCommunication";
+import { VALUE_TREE_STATE_CHANGE } from "../messages/callbackEventTypes";
 import { InputStream } from "./InputStream";
-import { USE_MOBX, ValueTree } from "./ValueTree";
+import { performUpdate } from "./mobxHelpers";
+import { ValueTree } from "./ValueTree";
 
 // For jest
 const TextEncoderImpl =
@@ -23,12 +25,10 @@ enum ChangeType {
   propertyRemoved = 6,
 }
 
-const performUpdate = (fn: () => void) =>
-  USE_MOBX ? runInAction(() => fn()) : fn();
-
 export const applyChange = (
   valueTree: ValueTree,
-  input: Uint8Array
+  input: Uint8Array,
+  onFullSync = () => {}
 ): boolean => {
   const inputStream = new InputStream(input);
 
@@ -36,6 +36,7 @@ export const applyChange = (
 
   if (type === ChangeType.fullSync) {
     valueTree.readFromStream(inputStream);
+    onFullSync();
     return true;
   }
 
@@ -136,4 +137,30 @@ const readSubTreeLocation = (valueTree: ValueTree, input: InputStream) => {
   }
 
   return valueTree;
+};
+
+type ValueTreeStateChangeMessageBody = { treeId: string; change: string };
+
+export const createValueTreeSynchroniser = (
+  treeId: string,
+  targetTree: ValueTree,
+  onInitialSyncRecieved = () => {}
+) => {
+  const initialSyncRecieved = false;
+
+  registerCallback(
+    VALUE_TREE_STATE_CHANGE,
+    (message: ValueTreeStateChangeMessageBody) => {
+      if (message.treeId !== treeId) return;
+
+      applyChange(
+        targetTree,
+        // Decode base64 encded change: https://stackoverflow.com/questions/21797299/convert-base64-string-to-arraybuffer
+        Uint8Array.from(atob(message.change), (c) => c.charCodeAt(0)),
+        () => {
+          if (!initialSyncRecieved) onInitialSyncRecieved();
+        }
+      );
+    }
+  );
 };

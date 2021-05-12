@@ -1,16 +1,16 @@
+import { observer } from "mobx-react";
 import { FC } from "react";
-import { sendMessageToJuce } from "../juceIntegration/juceIntegration";
-import { ParameterModel } from "../models/ParametersModel";
+import { ParameterModel } from "../juceIntegration/models/ParameterModel";
 
 interface Props {
   min?: number;
   max?: number;
   step?: number;
   label: string;
-  parameter: ParameterModel;
+  parameter: ParameterModel<number>;
 }
 
-export const ParameterSlider: FC<Props> = (props) => {
+export const ParameterSlider: FC<Props> = observer((props) => {
   return props.parameter ? (
     <div>
       {props.label}
@@ -20,16 +20,8 @@ export const ParameterSlider: FC<Props> = (props) => {
         max={props.max || 1}
         step={props.step || 0.01}
         value={props.parameter.value}
-        onChange={(e) =>
-          sendMessageToJuce({
-            eventType: "Main::setParameter",
-            data: {
-              id: props.parameter!.id,
-              value: Number(e.target.value),
-            },
-          })
-        }
+        onChange={(e) => (props.parameter.value = Number(e.target.value))}
       />
     </div>
   ) : null;
-};
+});

@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { join } from "path";
-import { TEST_ASSETS_PATH } from "../../test/utils";
+import { TEST_ASSETS_PATH } from "../../../test/utils";
 import { InputStream } from "./InputStream";
 import { ValueTree } from "./ValueTree";
 import { applyChange } from "./ValueTreeSynchroniser";

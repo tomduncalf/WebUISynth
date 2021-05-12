@@ -18,7 +18,7 @@ using namespace tomduncalf::BrowserIntegration;
 */
 class WebUISynthAudioProcessorEditor : public juce::AudioProcessorEditor,
                                        public juce::Timer,
-                                       public BrowserIntegrationClient
+                                       public BrowserIntegrationPluginClient
 {
 public:
     WebUISynthAudioProcessorEditor (WebUISynthAudioProcessor&, juce::AudioProcessorValueTreeState& parameterValueTree);
@@ -38,9 +38,8 @@ private:
     juce::ValueTree state { "AppState" };
     juce::AudioProcessorValueTreeState& parameterValueTree;
 
-    BrowserComponent browser;
-    BrowserIntegration browserIntegration;
-    BrowserValueTreeSynchroniser valueTreeSynchroniser;
+    BrowserComponent browser { "http://127.0.0.1:3000" };
+    BrowserIntegration browserIntegration { browser };
 
     juce::Random r;
 

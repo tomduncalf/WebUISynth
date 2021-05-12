@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="HsEHXU" name="WebUISynth" projectType="audioplug" useAppConfig="0"
-              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn">
+              addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              defines="BROWSER_INTEGRATION_WRITE_PARAMETER_CONFIG_IN_DEBUG=1">
   <MAINGROUP id="RgJ6UX" name="WebUISynth">
     <GROUP id="{C56288B6-82E3-C7B5-C9B2-9F54F79B1E78}" name="Source">
       <FILE id="pmnTeF" name="AudioEngine.h" compile="0" resource="0" file="Source/AudioEngine.h"/>
       <FILE id="cWe9n3" name="CustomOscillator.h" compile="0" resource="0"
             file="Source/CustomOscillator.h"/>
-      <FILE id="zmMu8X" name="ParameterIdentifiers.h" compile="0" resource="0"
-            file="Source/ParameterIdentifiers.h"/>
+      <FILE id="zmMu8X" name="ParameterIds.h" compile="0" resource="0" file="Source/ParameterIds.h"/>
       <FILE id="LDLeBa" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="Vn2Wh8" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
@@ -21,10 +21,10 @@
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" postbuildCommand="# Only start the dev server in debug mode, and for the &quot;Shared Code&quot; target of the build&#10;# (Xcode will try to run the script twice, once for the Shared Code and once for the actual build)&#10;if [ &quot;$CONFIGURATION&quot; == &quot;Debug&quot; ] &amp;&amp;  [[ $TARGET_NAME == *&quot; - Shared Code&quot; ]]; then&#10;  if nc -w 5 -z localhost 3000 ; then &#10;    if ! curl -s &quot;http://localhost:3000/status&quot; ; then&#10;      echo &quot;Port already in use, server is either not running or not running correctly&quot;&#10;      exit 2&#10;    fi&#10;    else&#10;      osascript &lt;&lt;END&#10;tell application &quot;Terminal&quot;&#10;do script &quot;cd \&quot;${SRCROOT}/../../ui\&quot;; BROWSER=none yarn start&quot;&#10;end tell&#10;END&#10;  fi&#10;fi&#10;">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="WebUISynth"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="WebUISynth"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="WebUISynth" recommendedWarnings="LLVM"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="WebUISynth" recommendedWarnings="LLVM"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>

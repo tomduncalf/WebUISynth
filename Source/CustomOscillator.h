@@ -10,22 +10,46 @@
 
 #pragma once
 
-template <typename Type>
+template<typename Type>
 class CustomOscillator
 {
+    enum OscTypeEnum
+    {
+        saw,
+        sin
+    };
+
 public:
     //==============================================================================
     CustomOscillator()
     {
+        setType (OscTypeEnum::saw);
+    }
+
+    void setType (int type)
+    {
         auto& osc = processorChain.template get<oscIndex>();
-        //        osc.initialise ([] (Type x) { return std::sin (x); }, 128);
-        osc.initialise ([] (Type x)
-                        { return juce::jmap (x,
-                                             Type (-juce::MathConstants<double>::pi),
-                                             Type (juce::MathConstants<double>::pi),
-                                             Type (-1),
-                                             Type (1)); },
-                        2);
+
+        if (type == OscTypeEnum::saw)
+        {
+            osc.initialise (
+                [] (Type x) {
+                    return juce::jmap (x,
+                                       Type (-juce::MathConstants<double>::pi),
+                                       Type (juce::MathConstants<double>::pi),
+                                       Type (-1),
+                                       Type (1));
+                },
+                2);
+        }
+        else if (type == OscTypeEnum::sin)
+        {
+            osc.initialise (
+                [] (Type x) {
+                    return std::sin (x);
+                },
+                128);
+        }
     }
 
     //==============================================================================
@@ -49,7 +73,7 @@ public:
     }
 
     //==============================================================================
-    template <typename ProcessContext>
+    template<typename ProcessContext>
     void process (const ProcessContext& context) noexcept
     {
         processorChain.process (context);
@@ -66,8 +90,9 @@ private:
     enum
     {
         oscIndex,
-        gainIndex // [2]
+        gainIndex// [2]
     };
 
-    juce::dsp::ProcessorChain<juce::dsp::Oscillator<Type>, juce::dsp::Gain<Type>> processorChain;
+    juce::dsp::ProcessorChain<juce::dsp::Oscillator<Type>, juce::dsp::Gain<Type>>
+        processorChain;
 };

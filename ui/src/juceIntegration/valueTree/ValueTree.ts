@@ -5,8 +5,7 @@
 
 import { action, makeObservable, observable } from "mobx";
 import { InputStream, JuceVariant } from "./InputStream";
-
-export const USE_MOBX = true;
+import { performUpdate, USE_MOBX } from "./mobxHelpers";
 
 export class ValueTree {
   constructor(
@@ -21,6 +20,7 @@ export class ValueTree {
         properties: observable,
         children: observable,
         parent: observable,
+        setProperty: action,
         replaceWithValueTree: action,
       });
     }
@@ -50,6 +50,10 @@ export class ValueTree {
     return this.children.find((c) => c.properties.get(name) === value);
   };
 
+  setProperty = (name: string, value: JuceVariant) => {
+    this.properties.set(name, value);
+  };
+
   static readFromStream(input: InputStream) {
     const type = input.readString();
 
@@ -67,7 +71,9 @@ export class ValueTree {
       const name = input.readString();
 
       if (name !== "") {
-        tree.properties.set(name, input.readVar());
+        performUpdate(() => {
+          tree.setProperty(name, input.readVar());
+        });
       } else {
         console.assert(false, "Data is corrupted");
       }
@@ -79,7 +85,9 @@ export class ValueTree {
 
       if (!child.isValid()) return tree;
 
-      tree.children.push(child);
+      performUpdate(() => {
+        tree.children.push(child);
+      });
       child.parent = tree;
     }
 

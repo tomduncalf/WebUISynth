@@ -13,12 +13,9 @@
 WebUISynthAudioProcessorEditor::WebUISynthAudioProcessorEditor (WebUISynthAudioProcessor& p,
                                                                 juce::AudioProcessorValueTreeState& t)
     : AudioProcessorEditor (&p),
-      BrowserIntegrationClient ("Main", browserIntegration),
+      BrowserIntegrationPluginClient (browserIntegration, t, __FILE__),
       audioProcessor (p),
-      parameterValueTree (t),
-      browser ("http://127.0.0.1:3000"),
-      browserIntegration (browser),
-      valueTreeSynchroniser (parameterValueTree.state, "parameters", browser)
+      parameterValueTree (t)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -26,13 +23,7 @@ WebUISynthAudioProcessorEditor::WebUISynthAudioProcessorEditor (WebUISynthAudioP
 
     addAndMakeVisible (browser);
 
-    registerBrowserCallback ("AppReady", [this] (juce::var) {
-        valueTreeSynchroniser.sendFullSyncCallback();
-    });
-
-    registerBrowserCallback ("setParameter", [this] (juce::var data) {
-        parameterValueTree.getParameterAsValue (data["id"].toString()).setValue (data["value"]);
-    });
+    setupBrowserPluginIntegration();
 }
 
 WebUISynthAudioProcessorEditor::~WebUISynthAudioProcessorEditor()

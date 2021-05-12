@@ -142,10 +142,58 @@ juce::AudioProcessorValueTreeState::ParameterLayout WebUISynthAudioProcessor::cr
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
-    layout.add (
-        std::make_unique<juce::AudioParameterFloat> (ParameterIdentifiers::filterCutoff, "Filter cutoff", 20, 10000, 1000));
-    layout.add (
-        std::make_unique<juce::AudioParameterFloat> (ParameterIdentifiers::filterResonance, "Filter resonance", 0, 0.9, 0.3));
+    layout.add (std::make_unique<juce::AudioParameterChoice> (
+        ParameterIds::osc1Type,
+        "Osc 1 Type",
+        juce::StringArray { OscTypes::saw, OscTypes::sin },
+        0));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        ParameterIds::filterCutoff,
+        "Filter Cutoff",
+        20,
+        10000,
+        1000));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        ParameterIds::filterResonance,
+        "Filter Resonance",
+        0,
+        0.9,
+        0.3));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        ParameterIds::ampEnvAttack,
+        "Amp Env Attack",
+        0.001,
+        2,
+        0.001));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        ParameterIds::ampEnvDecay,
+        "Amp Env Decay",
+        0,
+        2,
+        0));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        ParameterIds::ampEnvSustain,
+        "Amp Env Sustain",
+        0,
+        1,
+        1));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        ParameterIds::ampEnvRelease,
+        "Amp Env Release",
+        0.001,
+        2,
+        0.5));
+
+    //    layout.add (std::make_unique<juce::AudioParameterInt> ("testInt", "Int", 0, 10, 5));
+    //    layout.add (std::make_unique<juce::AudioParameterBool> ("testBool", "Bool", false));
+    //    juce::StringArray choices = { "choice a", "choice b", "choice c" };
+    //    layout.add (std::make_unique<juce::AudioParameterChoice> ("testChoice", "Choice", choices, 0));
 
     return layout;
 }
