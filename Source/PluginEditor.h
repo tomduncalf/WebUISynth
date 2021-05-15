@@ -38,7 +38,8 @@ private:
     juce::ValueTree state { "AppState" };
     juce::AudioProcessorValueTreeState& parameterValueTree;
 
-    BrowserComponent browser { "http://127.0.0.1:3000" };
+    BrowserComponent browser;
+
     BrowserIntegration browserIntegration { browser };
 
     juce::Random r;

@@ -15,7 +15,13 @@ WebUISynthAudioProcessorEditor::WebUISynthAudioProcessorEditor (WebUISynthAudioP
     : AudioProcessorEditor (&p),
       BrowserIntegrationPluginClient (browserIntegration, t, __FILE__),
       audioProcessor (p),
-      parameterValueTree (t)
+      parameterValueTree (t),
+#if JUCE_DEBUG
+      browser ("http://127.0.0.1:3000"),
+#else
+      // TODO Windows etc path
+      browser ("file://" + juce::File::getSpecialLocation (juce::File::SpecialLocationType::currentApplicationFile).getChildFile ("Contents/Resources/build/index.html").getFullPathName()),
+#endif
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
