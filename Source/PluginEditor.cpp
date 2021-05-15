@@ -16,12 +16,6 @@ WebUISynthAudioProcessorEditor::WebUISynthAudioProcessorEditor (WebUISynthAudioP
       BrowserIntegrationPluginClient (browserIntegration, t, __FILE__),
       audioProcessor (p),
       parameterValueTree (t),
-#if JUCE_DEBUG
-      browser ("http://127.0.0.1:3000"),
-#else
-      // TODO Windows etc path
-      browser ("file://" + juce::File::getSpecialLocation (juce::File::SpecialLocationType::currentApplicationFile).getChildFile ("Contents/Resources/build/index.html").getFullPathName()),
-#endif
       scopeDataSender (p.getAudioBufferQueue(), browserIntegration)
 {
     // Make sure that before the constructor has finished, you've set the
