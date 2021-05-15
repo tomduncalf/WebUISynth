@@ -151,9 +151,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout WebUISynthAudioProcessor::cr
     layout.add (std::make_unique<juce::AudioParameterFloat> (
         ParameterIds::filterCutoff,
         "Filter Cutoff",
-        20,
-        10000,
-        1000));
+        juce::NormalisableRange<float> (20, 10000),
+        1000,
+        "Filter Cutoff",
+        juce::AudioProcessorParameter::genericParameter,
+        [] (float value, int) {
+            return juce::String (value) + "hz";
+        }));
 
     layout.add (std::make_unique<juce::AudioParameterFloat> (
         ParameterIds::filterResonance,
