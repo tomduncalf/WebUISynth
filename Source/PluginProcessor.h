@@ -13,6 +13,8 @@
 #include "ParameterIds.h"
 
 #include "AudioEngine.h"
+#include "AudioBufferQueue.h"
+#include "ScopeDataCollector.h"
 
 //==============================================================================
 /**
@@ -59,10 +61,15 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    AudioBufferQueue<float>& getAudioBufferQueue() noexcept;
+
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WebUISynthAudioProcessor)
 
     juce::AudioProcessorValueTreeState parameterValueTree;
     AudioEngine audioEngine;
+
+    AudioBufferQueue<float> audioBufferQueue;
+    ScopeDataCollector<float> scopeDataCollector { audioBufferQueue };
 };

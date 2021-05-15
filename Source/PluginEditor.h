@@ -8,8 +8,10 @@
 
 #pragma once
 
-#include "PluginProcessor.h"
 #include <JuceHeader.h>
+
+#include "PluginProcessor.h"
+#include "ScopeDataSender.h"
 
 using namespace tomduncalf::BrowserIntegration;
 
@@ -17,7 +19,6 @@ using namespace tomduncalf::BrowserIntegration;
 /**
 */
 class WebUISynthAudioProcessorEditor : public juce::AudioProcessorEditor,
-                                       public juce::Timer,
                                        public BrowserIntegrationPluginClient
 {
 public:
@@ -28,8 +29,6 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
-    void timerCallback() override;
-
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -39,10 +38,9 @@ private:
     juce::AudioProcessorValueTreeState& parameterValueTree;
 
     BrowserComponent browser;
-
     BrowserIntegration browserIntegration { browser };
 
-    juce::Random r;
+    ScopeDataSender<float> scopeDataSender;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WebUISynthAudioProcessorEditor)
 };

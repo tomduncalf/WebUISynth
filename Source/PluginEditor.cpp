@@ -22,6 +22,7 @@ WebUISynthAudioProcessorEditor::WebUISynthAudioProcessorEditor (WebUISynthAudioP
       // TODO Windows etc path
       browser ("file://" + juce::File::getSpecialLocation (juce::File::SpecialLocationType::currentApplicationFile).getChildFile ("Contents/Resources/build/index.html").getFullPathName()),
 #endif
+      scopeDataSender (p.getAudioBufferQueue(), browserIntegration)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -49,10 +50,4 @@ void WebUISynthAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
     browser.setBounds (getBounds());
-}
-
-void WebUISynthAudioProcessorEditor::timerCallback()
-{
-    auto number = r.nextInt (100);
-    state.setProperty ("intProperty", number, nullptr);
 }

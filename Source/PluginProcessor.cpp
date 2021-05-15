@@ -224,6 +224,7 @@ void WebUISynthAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
     audioEngine.renderNextBlock (buffer, midiMessages, 0, buffer.getNumSamples());
+    scopeDataCollector.process (buffer.getReadPointer (0), (size_t) buffer.getNumSamples());
 }
 
 //==============================================================================
@@ -257,6 +258,11 @@ void WebUISynthAudioProcessor::setStateInformation (const void* data, int sizeIn
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+AudioBufferQueue<float>& WebUISynthAudioProcessor::getAudioBufferQueue() noexcept
+{
+    return audioBufferQueue;
 }
 
 //==============================================================================

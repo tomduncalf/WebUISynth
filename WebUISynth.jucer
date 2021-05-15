@@ -5,6 +5,8 @@
               defines="BROWSER_INTEGRATION_WRITE_PARAMETER_CONFIG_IN_DEBUG=1">
   <MAINGROUP id="RgJ6UX" name="WebUISynth">
     <GROUP id="{C56288B6-82E3-C7B5-C9B2-9F54F79B1E78}" name="Source">
+      <FILE id="NgWIoz" name="AudioBufferQueue.h" compile="0" resource="0"
+            file="Source/AudioBufferQueue.h"/>
       <FILE id="pmnTeF" name="AudioEngine.h" compile="0" resource="0" file="Source/AudioEngine.h"/>
       <FILE id="cWe9n3" name="CustomOscillator.h" compile="0" resource="0"
             file="Source/CustomOscillator.h"/>
@@ -16,6 +18,10 @@
             file="Source/PluginProcessor.cpp"/>
       <FILE id="Ai5GJQ" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
+      <FILE id="cnia1A" name="ScopeDataCollector.h" compile="0" resource="0"
+            file="Source/ScopeDataCollector.h"/>
+      <FILE id="c4Vm6I" name="ScopeDataSender.h" compile="0" resource="0"
+            file="Source/ScopeDataSender.h"/>
       <FILE id="B3ewDT" name="Voice.h" compile="0" resource="0" file="Source/Voice.h"/>
     </GROUP>
   </MAINGROUP>
