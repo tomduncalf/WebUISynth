@@ -49,7 +49,7 @@
         <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
-        <MODULEPATH id="tomduncalf_juce_browser_integration" path="../../juce_modules"/>
+        <MODULEPATH id="tomduncalf_juce_browser_integration" path="../juce_modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <XCODE_IPHONE targetFolder="Builds/iOS" iosBackgroundAudio="1" iosDevelopmentTeamID="TKQQG6PP9C"
@@ -59,7 +59,7 @@
         <CONFIGURATION isDebug="0" name="Release"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="tomduncalf_juce_browser_integration" path="../../juce_modules"/>
+        <MODULEPATH id="tomduncalf_juce_browser_integration" path="../juce_modules"/>
         <MODULEPATH id="juce_gui_extra"/>
         <MODULEPATH id="juce_gui_basics"/>
         <MODULEPATH id="juce_graphics"/>
