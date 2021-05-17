@@ -68,6 +68,6 @@ private:
         for (auto sample: sampleData)
             samples.append (sample);
 
-        sendEventToBrowser ("scopeUpdate", samples);
+        sendEventToBrowser ("scopeUpdate", samples, true);
     }
 };

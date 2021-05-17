@@ -2,7 +2,9 @@
 
 <JUCERPROJECT id="HsEHXU" name="WebUISynth" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              defines="BROWSER_INTEGRATION_WRITE_PARAMETER_CONFIG_IN_DEBUG=1">
+              defines="BROWSER_INTEGRATION_WRITE_PARAMETER_CONFIG_IN_DEBUG=1"
+              pluginCode="Webu" pluginManufacturerCode="Tomd" pluginManufacturer="Tom Duncalf"
+              pluginAUMainType="'aumu'" pluginAUIsSandboxSafe="1" pluginFormats="buildAU,buildAUv3,buildStandalone,buildVST3">
   <MAINGROUP id="RgJ6UX" name="WebUISynth">
     <GROUP id="{C56288B6-82E3-C7B5-C9B2-9F54F79B1E78}" name="Source">
       <FILE id="NgWIoz" name="AudioBufferQueue.h" compile="0" resource="0"
@@ -27,7 +29,8 @@
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" postbuildCommand="# Only start the dev server in debug mode, and for the &quot;Shared Code&quot; target of the build&#10;# (Xcode will try to run the script twice, once for the Shared Code and once for the actual build)&#10;if [ &quot;$CONFIGURATION&quot; == &quot;Debug&quot; ] &amp;&amp;  [[ $TARGET_NAME == *&quot; - Shared Code&quot; ]]; then&#10;  if nc -w 5 -z localhost 3000 ; then &#10;    if ! curl -s &quot;http://localhost:3000/status&quot; ; then&#10;      echo &quot;Port already in use, server is either not running or not running correctly&quot;&#10;      exit 2&#10;    fi&#10;    else&#10;      osascript &lt;&lt;END&#10;tell application &quot;Terminal&quot;&#10;do script &quot;cd \&quot;${SRCROOT}/../../ui\&quot;; BROWSER=none yarn start&quot;&#10;end tell&#10;END&#10;  fi&#10;fi&#10;">
+    <XCODE_MAC targetFolder="Builds/MacOSX" postbuildCommand="sh ../../setup_dev_server.sh"
+               customPList="&lt;plist&gt;&#10;&lt;dict&gt;&#10;    &lt;key&gt;DevServerIP&lt;/key&gt;&#10;    &#9;&lt;string&gt;&lt;/string&gt;&#10;&lt;/dict&gt;&#10;&lt;/plist&gt;">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="WebUISynth" recommendedWarnings="LLVM"/>
         <CONFIGURATION isDebug="0" name="Release" targetName="WebUISynth" recommendedWarnings="LLVM"/>
@@ -49,6 +52,29 @@
         <MODULEPATH id="tomduncalf_juce_browser_integration" path="../../juce_modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
+    <XCODE_IPHONE targetFolder="Builds/iOS" iosBackgroundAudio="1" iosDevelopmentTeamID="TKQQG6PP9C"
+                  postbuildCommand="sh ../../setup_dev_server.sh" customPList="&lt;plist&gt;&#10;&lt;dict&gt;&#10;    &lt;key&gt;DevServerIP&lt;/key&gt;&#10;    &#9;&lt;string&gt;&lt;/string&gt;&#10;    &lt;key&gt;NSAppTransportSecurity&lt;/key&gt;&#10;    &lt;dict&gt;&#10;        &lt;key&gt;NSAllowsArbitraryLoads&lt;/key&gt;&#10;        &lt;true/&gt;&#10;    &lt;/dict&gt;&#10;&lt;/dict&gt;&#10;&lt;/plist&gt;">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="tomduncalf_juce_browser_integration" path="../../juce_modules"/>
+        <MODULEPATH id="juce_gui_extra"/>
+        <MODULEPATH id="juce_gui_basics"/>
+        <MODULEPATH id="juce_graphics"/>
+        <MODULEPATH id="juce_events"/>
+        <MODULEPATH id="juce_dsp"/>
+        <MODULEPATH id="juce_data_structures"/>
+        <MODULEPATH id="juce_core"/>
+        <MODULEPATH id="juce_audio_utils"/>
+        <MODULEPATH id="juce_audio_processors"/>
+        <MODULEPATH id="juce_audio_plugin_client"/>
+        <MODULEPATH id="juce_audio_formats"/>
+        <MODULEPATH id="juce_audio_devices"/>
+        <MODULEPATH id="juce_audio_basics"/>
+      </MODULEPATHS>
+    </XCODE_IPHONE>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
