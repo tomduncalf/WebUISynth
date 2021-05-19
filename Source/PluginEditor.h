@@ -37,7 +37,7 @@ private:
     juce::ValueTree state { "AppState" };
     juce::AudioProcessorValueTreeState& parameterValueTree;
 
-    BrowserComponent browser { "https://google.com" };
+    BrowserComponent browser;
     BrowserIntegration browserIntegration { browser };
 
     ScopeDataSender<float> scopeDataSender;

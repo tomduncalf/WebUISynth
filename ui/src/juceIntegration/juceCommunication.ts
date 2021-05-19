@@ -29,11 +29,13 @@ declare global {
   }
 }
 
+// TODO fix any type?
 window.receiveMessageFromJuce = (message: JuceMessage<any>) => {
-  console.log("receiveMessageFromJuce", message);
+  // TODO proper fix for chatty updates e.g. suppressLog option
+  if (message.eventType !== "Scope::scopeUpdate")
+    console.log("receiveMessageFromJuce", message);
 
   try {
-    // const message: JuceMessage<unknown> = JSON.parse(message);
     const existingCallbacks = callbacks.get(message.eventType);
 
     if (existingCallbacks) {

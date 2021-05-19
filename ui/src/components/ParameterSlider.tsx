@@ -12,8 +12,8 @@ interface Props {
 
 export const ParameterSlider: FC<Props> = observer((props) => {
   return props.parameter ? (
-    <div>
-      {props.label}
+    <div style={{ display: "flex", marginBottom: 2 }}>
+      <div style={{ flex: 1 }}>{props.label}</div>
       <input
         type="range"
         min={props.min || 0}
@@ -21,6 +21,7 @@ export const ParameterSlider: FC<Props> = observer((props) => {
         step={props.step || 0.01}
         value={props.parameter.value}
         onChange={(e) => (props.parameter.value = Number(e.target.value))}
+        style={{ flex: 2 }}
       />
     </div>
   ) : null;

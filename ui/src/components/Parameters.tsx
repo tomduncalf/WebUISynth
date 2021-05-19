@@ -7,11 +7,13 @@ export const Parameters = () => {
   const parameters = useContext(ParametersContext)!;
 
   return (
-    <>
-      <div>Parameters</div>
+    <div style={{ padding: 10 }}>
+      <ParameterChoice
+        choices={["Saw", "Sin"]}
+        label="Osc Waveform"
+        parameter={parameters.osc1Type}
+      />
 
-      {/* <ParameterChoice
-choices={parameters} */}
       <ParameterSlider
         min={20}
         max={10000}
@@ -48,6 +50,6 @@ choices={parameters} */}
         parameter={parameters.ampEnvRelease}
         label="Amp Env Release"
       />
-    </>
+    </div>
   );
 };

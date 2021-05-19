@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    Voice.h
-    Created: 11 May 2021 9:18:22am
-    Author:  Tom Duncalf
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include "CustomOscillator.h"
@@ -102,8 +92,6 @@ public:
     //==============================================================================
     void noteStopped (bool) override
     {
-        //        clearCurrentNote();
-
         adsrEnvelope.noteOff();
     }
 

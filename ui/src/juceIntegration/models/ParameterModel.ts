@@ -17,7 +17,6 @@ export class ParameterModel<T extends JuceVariant> {
   }
 
   set value(value: T) {
-    // TODO handle choices
     setParameter(this.id, value);
   }
 }
