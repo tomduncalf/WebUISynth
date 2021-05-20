@@ -1,12 +1,12 @@
 # WebUISynth
 
-A project building a simple synth (using JUCE's DSP classes and mostly copying the [JUCE DSP tutorial](https://docs.juce.com/master/tutorial_dsp_introduction.html)) integrated with a web UI (using React and Typescript). The UI is automatically synchronised with the plugin's state, taking advantage of JUCE's ValueTree class on the C++ side and MobX on the Javascript side.
+A project building a simple synth (using JUCE's DSP classes and mostly copying the [JUCE DSP tutorial](https://docs.juce.com/master/tutorial_dsp_introduction.html)) integrated with a web UI (using React and TypeScript). The UI is automatically synchronised with the plugin's state, taking advantage of JUCE's ValueTree class on the C++ side and MobX on the Javascript side.
 
 <img alt="Screenshot of WebUISynth running" src="https://user-images.githubusercontent.com/5458070/118700820-f6849580-b80a-11eb-97ef-b5624b6d50c0.png" width="500" />
 
 The project is intended as a showcase for the [juce_browser_integration](https://github.com/tomduncalf/juce_browser_integration) module I have created, which provides helper classes and patterns for easily integrating a web UI with a JUCE app.
 
-You can see that only a small amount of code is required from the developer to hook up UI to the plugin's parameters: https://github.com/tomduncalf/WebUISynth/blob/main/ui/src/components/Parameters.tsx – the code in https://github.com/tomduncalf/WebUISynth/tree/main/ui/src/juceIntegration (which will be split out into its own reusable npm module) takes care of automatically synchronising state between JUCE and JS.
+You can see that only a small amount of code is required from the developer to hook up UI to the plugin's parameters: [Parameters.tsx](https://github.com/tomduncalf/WebUISynth/blob/main/ui/src/components/Parameters.tsx) – the code in the [juceIntegration directory](https://github.com/tomduncalf/WebUISynth/tree/main/ui/src/juceIntegration) (which will be split out into its own reusable npm module) takes care of automatically synchronising state between JUCE and JS.
 
 The plugin also integrates an oscilloscope running at 30fps (rendered using a HTML canvas), to demonstrate that fast state updates are possible without a significant impact on performance – in my measurements, the CPU usage remained in the same ballpark as doing the same rendering with JUCE graphics.
 
@@ -33,7 +33,7 @@ Work in progress - basic engine and UI integration is working, but needs tidy up
 5. Select the `WebUISynth - Standalone Plugin` target in Xcode's header, then click the build button (play icon). The project should compile and start running as a standalone application. It should also open a Terminal window, in which the React dev server will run (so that the UI can be loaded from your local machine) – check this has no errors.
 6. Go to `Options` > `Audio/MIDI Settings` and select your MIDI keyboard as an input and play some notes – you should hear a basic synth sound which you can modify with the sliders.
 
-You can now edit the UI code in the `ui` directory (I recommend using VS Code as an editor as it has excellent Typescript support) and you should see the changes instantly in your app.
+You can now edit the UI code in the `ui` directory (I recommend using VS Code as an editor as it has excellent TypeScript support) and you should see the changes instantly in your app.
 
 You should also be able run to the synth as a plugin – I find this a bit less convenient for developing, as your plugin host probably takes a little while to startup. You may need to resign your plugin host to allow you to debug plugins running inside it. For Ableton Live you can do this by:
 
@@ -53,4 +53,4 @@ By default, the JUCE WebBrowserComponent does not expose the ability to access t
 
 - [ ] Move JUCE integration code into a reusable npm module
 - [ ] Proper styling
-- [ ] also see https://github.com/tomduncalf/tomduncalf_juce_browser_integration/#TODO for wider integration TODO's
+- [ ] Also see https://github.com/tomduncalf/tomduncalf_juce_browser_integration/#TODO for wider integration TODO's
