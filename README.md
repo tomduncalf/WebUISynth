@@ -12,7 +12,7 @@ The plugin also integrates an oscilloscope running at 30fps (rendered using a HT
 
 Please see the JUCE module's repo for more details on the integration: https://github.com/tomduncalf/juce_browser_integration.
 
-Ultimately this project and the integration will be cross-platform on both desktop and mobile, but right now it has only been tested on macOS and iOS (where it currently works standalone but not as an AUv3).
+Ultimately this project and the integration will be cross-platform on both desktop and mobile, but right now it has only been tested on macOS and iOS.
 
 ## Status
 

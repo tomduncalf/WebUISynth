@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="HsEHXU" name="WebUISynth" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              defines="BROWSER_INTEGRATION_WRITE_PARAMETER_CONFIG_IN_DEBUG=1&#10;BROWSER_INTEGRATION_USE_DEV_SERVER_IN_DEBUG=0"
+              defines="BROWSER_INTEGRATION_WRITE_PARAMETER_CONFIG_IN_DEBUG=1&#10;BROWSER_INTEGRATION_USE_DEV_SERVER_IN_DEBUG=1"
               pluginCode="Webu" pluginManufacturerCode="Tomd" pluginManufacturer="Tom Duncalf"
               pluginAUMainType="'aumu'" pluginAUIsSandboxSafe="1" pluginFormats="buildAU,buildAUv3,buildStandalone,buildVST3">
   <MAINGROUP id="RgJ6UX" name="WebUISynth">
