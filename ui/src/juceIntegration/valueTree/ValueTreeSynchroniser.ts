@@ -139,7 +139,7 @@ const readSubTreeLocation = (valueTree: ValueTree, input: InputStream) => {
   return valueTree;
 };
 
-type ValueTreeStateChangeMessageBody = { treeId: string; change: string };
+type ValueTreeStateChangeMessageBody = { treeId: string; changes: string[] };
 
 export const createValueTreeSynchroniser = (
   treeId: string,
@@ -153,14 +153,18 @@ export const createValueTreeSynchroniser = (
     (message: ValueTreeStateChangeMessageBody) => {
       if (message.treeId !== treeId) return;
 
-      applyChange(
-        targetTree,
-        // Decode base64 encded change: https://stackoverflow.com/questions/21797299/convert-base64-string-to-arraybuffer
-        Uint8Array.from(atob(message.change), (c) => c.charCodeAt(0)),
-        () => {
-          if (!initialSyncRecieved) onInitialSyncRecieved();
-        }
-      );
+      performUpdate(() => {
+        message.changes.forEach((change) => {
+          applyChange(
+            targetTree,
+            // Decode base64 encded change: https://stackoverflow.com/questions/21797299/convert-base64-string-to-arraybuffer
+            Uint8Array.from(atob(change), (c) => c.charCodeAt(0)),
+            () => {
+              if (!initialSyncRecieved) onInitialSyncRecieved();
+            }
+          );
+        });
+      });
     }
   );
 };
