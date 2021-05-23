@@ -17,7 +17,8 @@ export const registerCallback = <T extends Function>(
 
 export const sendMessageToJuce = <T>(message: JuceMessage<T>) => {
   try {
-    window.location.href = "juce://" + JSON.stringify(message);
+    // window.location.href = "juce://" + JSON.stringify(message);
+    (window as any).webkit.messageHandlers.juce.postMessage(message);
   } catch (e) {
     console.error("Error sending message to JUCE", { e, message });
   }
