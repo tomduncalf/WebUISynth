@@ -16,7 +16,7 @@ Ultimately this project and the integration will be cross-platform on both deskt
 
 ## Status
 
-Work in progress - basic engine and UI integration is working, but needs tidy up, styling, modularisation, documenting and a tutorial writing.
+Experimental, work in progress - basic engine and UI integration is working, but needs tidy up, styling, modularisation, documenting and a tutorial writing.
 
 ## Requirements
 
