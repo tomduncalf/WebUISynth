@@ -1,6 +1,6 @@
 [submodule "JUCE"]
 	path = JUCE
 	url = git@github.com:juce-framework/JUCE.git
-[submodule "juce_modules/tomduncalf_juce_browser_integration"]
-	path = juce_modules/tomduncalf_juce_browser_integration
-	url = git@github.com:tomduncalf/tomduncalf_juce_browser_integration.git
+[submodule "juce_modules/tomduncalf_juce_web_ui"]
+	path = juce_modules/tomduncalf_juce_web_ui
+	url = git@github.com:tomduncalf/tomduncalf_juce_web_ui.git

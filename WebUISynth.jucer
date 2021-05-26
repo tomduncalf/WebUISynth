@@ -50,7 +50,7 @@
         <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
-        <MODULEPATH id="tomduncalf_juce_browser_integration" path="juce_modules"/>
+        <MODULEPATH id="tomduncalf_juce_web_ui" path="juce_modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <XCODE_IPHONE targetFolder="Builds/iOS" iosBackgroundAudio="1" iosDevelopmentTeamID="TKQQG6PP9C"
@@ -61,7 +61,7 @@
         <CONFIGURATION isDebug="0" name="Release"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="tomduncalf_juce_browser_integration" path="juce_modules"/>
+        <MODULEPATH id="tomduncalf_juce_web_ui" path="juce_modules"/>
         <MODULEPATH id="juce_gui_extra" path="JUCE/modules"/>
         <MODULEPATH id="juce_gui_basics" path="JUCE/modules"/>
         <MODULEPATH id="juce_graphics" path="JUCE/modules"/>
@@ -93,7 +93,7 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
-    <MODULE id="tomduncalf_juce_browser_integration" showAllCode="1" useLocalCopy="0"
+    <MODULE id="tomduncalf_juce_web_ui" showAllCode="1" useLocalCopy="0"
             useGlobalPath="0"/>
   </MODULES>
   <LIVE_SETTINGS>

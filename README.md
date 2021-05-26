@@ -53,4 +53,4 @@ By default, the JUCE WebBrowserComponent does not expose the ability to access t
 
 - [ ] Move JUCE integration code into a reusable npm module
 - [ ] Proper styling
-- [ ] Also see https://github.com/tomduncalf/tomduncalf_juce_browser_integration/#TODO for wider integration TODO's
+- [ ] Also see https://github.com/tomduncalf/tomduncalf_juce_web_ui/#TODO for wider integration TODO's
