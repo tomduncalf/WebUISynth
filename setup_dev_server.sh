@@ -1,1 +1,1 @@
-juce_modules/tomduncalf_juce_browser_integration/setup_dev_server.sh
+juce_modules/tomduncalf_juce_web_ui/setup_dev_server.sh
