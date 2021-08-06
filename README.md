@@ -23,15 +23,18 @@ Experimental, work in progress - basic engine and UI integration is working, but
 - JUCE v6 (https://juce.com/)
 - Node.js (I recommend installing it with https://github.com/nvm-sh/nvm to allow multiple versions to co-exist)
 - Xcode 12 (install from the Mac App Store)
+- Yarn (https://yarnpkg.com/)
 
 ## Running the project
 
 1. Clone this repository
 2. Run `git submodule update --init` to clone the required submodules (JUCE itself, and the juce_browser_integration module)
-3. Open `WebUISynth.jucer` in Projucer (which should have been installed with JUCE)
-4. Ensure the `Xcode (macOS)` exporter is selected in the header and press the "Xcode icon" button to export a new Xcode project
-5. Select the `WebUISynth - Standalone Plugin` target in Xcode's header, then click the build button (play icon). The project should compile and start running as a standalone application. It should also open a Terminal window, in which the React dev server will run (so that the UI can be loaded from your local machine) – check this has no errors.
-6. Go to `Options` > `Audio/MIDI Settings` and select your MIDI keyboard as an input and play some notes – you should hear a basic synth sound which you can modify with the sliders.
+3. 6. `cd ui` and run `yarn install` to install UI packages.
+4. While in the UI folder, run `yarn build` to generate static React bundle for webserver.
+5. Open `WebUISynth.jucer` in Projucer (which should have been installed with JUCE)
+6. Ensure the `Xcode (macOS)` exporter is selected in the header and press the "Xcode icon" button to export a new Xcode project
+7. Select the `WebUISynth - Standalone Plugin` target in Xcode's header, then click the build button (play icon). The project should compile and start running as a standalone application. It should also open a Terminal window, in which the React dev server will run (so that the UI can be loaded from your local machine) – check this has no errors.
+8. Go to `Options` > `Audio/MIDI Settings` and select your MIDI keyboard as an input and play some notes – you should hear a basic synth sound which you can modify with the sliders.
 
 You can now edit the UI code in the `ui` directory (I recommend using VS Code as an editor as it has excellent TypeScript support) and you should see the changes instantly in your app.
 
